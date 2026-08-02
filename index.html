@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#102c32">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>STOWAWAY HEARTS — Dodge the Fine</title>
+  <meta name="description" content="Classic four-player Hearts aboard the Champlain ferry. Dodge every heart and the Harbormaster's Fine.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="STOWAWAY HEARTS — Dodge the Fine">
+  <meta property="og:description" content="Four deckhands. Fifty-two cards. One very expensive Fine.">
+  <meta property="og:url" content="https://play.btownbrief.com/stowaway-hearts/">
+  <meta property="og:image" content="https://play.btownbrief.com/stowaway-hearts/icon-180.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="app">
+  <section id="menu" class="screen">
+    <div class="horizon" aria-hidden="true"><span></span></div>
+    <div class="menu-card">
+      <div class="ferry-mark" aria-hidden="true">⚓</div>
+      <h1><span>STOWAWAY</span> HEARTS</h1>
+      <p class="tagline">Four deckhands. Fifty-two cards.<br>One very expensive Fine.</p>
+
+      <button id="practiceBtn" class="big-btn">⛴️ PRACTICE CRUISE</button>
+      <p class="mode-note">you vs Deckhand Dot, Old Salt &amp; the Purser</p>
+      <button id="passBtn" class="mode-btn">🤝 PASS &amp; PLAY · 4 DECKHANDS</button>
+      <p class="mode-note">four humans, one phone, no peeking</p>
+
+      <div class="online-label">OR BOARD FROM FOUR PHONES</div>
+      <div class="online-row">
+        <button id="hostBtn" class="mode-btn"><b>⚓ START A CREW</b><small>get a boarding code</small></button>
+        <button id="joinBtn" class="mode-btn"><b>🔑 JOIN A CREW</b><small>bring a code</small></button>
+      </div>
+      <button id="rejoinBtn" class="chip hidden"></button>
+      <button id="rulesBtn" class="text-btn">HOW TO PLAY ↓</button>
+      <div id="rules" class="rules hidden">
+        <p>Pass 3 cards left, right, across, then hold. The 2♣ leads. Follow suit; hearts can’t lead until broken.</p>
+        <p>Each heart is 1 point. The Q♠ is the <b>Harbormaster’s Fine</b>: 13 points. No points may fall on trick one.</p>
+        <p>Take all 26 points and you shoot the moon: everyone else gets 26. At 100, the lowest score wins.</p>
+      </div>
+    </div>
+
+    <div id="onlinePanel" class="overlay hidden">
+      <div class="dialog">
+        <h2 id="opTitle">START A CREW</h2>
+        <label for="opName">YOUR DECKHAND NAME</label>
+        <input id="opName" maxlength="24" autocomplete="nickname" placeholder="Captain">
+        <div id="opSeatsWrap" class="fixed-crew">FOUR SEATS · ALL HANDS ON DECK</div>
+        <div id="opCodeWrap" class="hidden">
+          <label for="opCode">BOARDING CODE</label>
+          <input id="opCode" maxlength="4" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ABCD">
+        </div>
+        <div id="opError" class="error hidden"></div>
+        <div class="dialog-actions"><button id="opCancel" class="chip">BACK</button><button id="opGo" class="big-btn">GET A CODE</button></div>
+      </div>
+    </div>
+
+    <div id="lobby" class="overlay hidden">
+      <div class="dialog">
+        <div class="eyebrow">YOUR BOARDING CODE</div>
+        <div id="lobbyCode">ABCD</div>
+        <button id="inviteBtn" class="big-btn">📲 SEND AN INVITE</button>
+        <p id="lobbyHint">The ferry leaves when all four deckhands board.</p>
+        <ul id="lobbyNames" aria-live="polite"></ul>
+        <button id="lobbyCancel" class="chip">CALL IT OFF</button>
+      </div>
+    </div>
+
+    <footer>A Btown Games production · <a href="https://play.btownbrief.com/">More games →</a> · <a href="https://www.btownbrief.com">Read the BTown Brief →</a></footer>
+  </section>
+
+  <section id="handoff" class="screen hidden">
+    <div class="handoff-card">
+      <div class="handoff-icon">🛟</div>
+      <div class="eyebrow">HANDS OFF THE HAND</div>
+      <h2 id="handoffTitle">Pass to Deckhand 2</h2>
+      <p id="handoffSub">No peeking. The lake remembers.</p>
+      <button id="handoffBtn" class="big-btn">👀 SHOW MY HAND</button>
+    </div>
+  </section>
+
+  <section id="game" class="screen hidden">
+    <header class="topbar">
+      <button id="homeBtn" class="chip" aria-label="Return to dock">⚓ DOCK</button>
+      <div id="roundLabel">ROUND 1 · PASS LEFT</div>
+      <button id="scoreBtn" class="chip">SCORES</button>
+    </header>
+    <div id="statusLine" aria-live="polite"></div>
+    <div id="rivals"></div>
+    <div id="table">
+      <div class="wake wake-a"></div><div class="wake wake-b"></div>
+      <div id="trick" aria-label="Current trick"></div>
+      <div id="trickNote">2♣ LEADS THE CROSSING</div>
+    </div>
+    <div id="passBar" class="hidden"><span id="passPrompt">Choose 3 cards</span><button id="passConfirm" class="big-btn" disabled>PASS 3</button></div>
+    <div class="hand-heading"><span id="handLabel">YOUR HAND</span><span id="handCount"></span></div>
+    <div id="hand"></div>
+
+    <div id="scorePanel" class="overlay hidden">
+      <div class="dialog"><h2>SHIP’S LEDGER</h2><div id="scoreRows"></div><button id="scoreClose" class="big-btn">BACK TO THE TABLE</button></div>
+    </div>
+    <div id="roundPanel" class="overlay hidden">
+      <div class="dialog result-dialog"><div id="resultIcon">🛟</div><h2 id="resultTitle">ROUND COMPLETE</h2><p id="resultText"></p><div id="resultScores"></div><button id="nextBtn" class="big-btn">DEAL THE NEXT CROSSING</button><button id="resultHome" class="chip">BACK TO DOCK</button></div>
+    </div>
+    <div id="departurePanel" class="overlay hidden"><div class="dialog"><h2>CREW MEMBER ASHORE</h2><p id="departureText"></p><button id="departureHome" class="big-btn">BACK TO DOCK</button></div></div>
+  </section>
+</main>
+<script type="module" src="js/main.js"></script>
+<script src="https://play.btownbrief.com/ticker.js" defer></script>
+</body>
+</html>
